@@ -21,18 +21,25 @@ const pixelData = [
   ['red', 'red', 'blue', 'black'],
   ['red', 'red', 'blue', 'black'],
 ]
+
+var clients = []
+
 io.on('connection',(socket) => {
+  clients.push(socket)
+  console.log(clients.length)
+
   //前端io通过这句收到事件
-  socket.emit('pixel-data', pixelData)
+  socket.emit('initial-pixel-data', pixelData)
 
   socket.on('draw-dot', ({row,col,color}) => {
-    console.log('14211')
+    console.log('画点进来')
     pixelData[row][col] = color
-    // socket.broadcast.emit('update-dot', { row, col, color })//把这个点发给所有的连接上来的客户端
-    console.log('0200')
-    io.emit('update-dot', { row, col, color })  //给别人发一份也给自己发一份
+    socket.broadcast.emit('update-dot', { row, col, color })//把这个点发给所有的连接上来的客户端
+    console.log('广播结束')
+    socket.emit('update-dot', { row, col, color })  //给别人发一份也给自己发一份
   })
   socket.on('disconnect', () => {
+    clients = clients.filter(it => it != socket)
     console.log('someone leave')
   })
 })
