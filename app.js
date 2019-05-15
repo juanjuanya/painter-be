@@ -15,7 +15,7 @@ const server = app.listen(port, () => {
 //拿到io
 const io = SocketIO(server)
 
-// app.use(express.static(path.join(__dirname,'./dist')))
+app.use(express.static(path.join(__dirname,'./dist')))
 
 async function main() {
   // const pixelData = new Jimp(100,100,0xffff00ff)
@@ -66,7 +66,7 @@ async function main() {
       // io.emit('update-dot', { row, col, color })//把这个点发给所有的连接上来的客户端，包括自己
      
       try{
-        var buf = await pixelData.getBufferAsync(Jimp.MIMe_PNG)
+        var buf = await pixelData.getBufferAsync(Jimp.MIME_PNG)
         await fs.promises.writeFile('./pixelData.png', buf)
         console.log('save pixel data success!')
       } catch(err) {
