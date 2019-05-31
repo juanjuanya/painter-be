@@ -5,7 +5,7 @@ const Jimp = require('jimp')
 const fs = require('fs')
   
 const app = express()
-const port = 3005
+const port = 3006
 //主要需要创建websocket服务器，而不是一个正常服务器
 //未来启动后，需要向客户端服务一个页面，需要一个静态文件，先不管
 const server = app.listen(port, () => {
@@ -15,7 +15,7 @@ const server = app.listen(port, () => {
 //拿到io
 const io = SocketIO(server)
 
-app.use(express.static(path.join(__dirname,'./dist')))
+app.use(express.static(path.join(__dirname, '../fe/build')))  //'./dist'   '../fe/build' //3005直接打开就能用
 
 async function main() {
   // const pixelData = new Jimp(100,100,0xffff00ff)
